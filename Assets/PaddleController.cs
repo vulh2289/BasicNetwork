@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class PaddleController : NetworkBehaviour {
 
 	private float speed = 10.0f;
+	public bool inverse;
+	public int playerId = -1;
 
 	void Start () {
 		Input.multiTouchEnabled = true; //enabled Multitouch
@@ -38,11 +40,16 @@ public class PaddleController : NetworkBehaviour {
 
 	[Command]
 	public void CmdMoveLeft() {
-		transform.position += Vector3.left * speed * Time.deltaTime;
+
+		Vector3 direction = !inverse ? Vector3.left : Vector3.right;
+
+		transform.position += direction * speed * Time.deltaTime;
 	}
 
 	[Command]
 	public void CmdMoveRight() {
-		transform.position += Vector3.right * speed * Time.deltaTime;
+		Vector3 direction = !inverse ? Vector3.right : Vector3.left;
+
+		transform.position += direction * speed * Time.deltaTime;
 	}
 }
