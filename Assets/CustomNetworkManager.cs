@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class CustomNetworkManager : NetworkManager
 {
 	public static int playerCount;
-	public GameObject ballPrefab;
 
 	public Transform pos1;
 	public Transform pos2;
@@ -28,18 +27,6 @@ public class CustomNetworkManager : NetworkManager
 		GameObject player = (GameObject)Instantiate(playerPrefab, transform.position, transform.rotation);
 
 		NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
-
-		if (playerCount == 2) {
-			var ball = Instantiate (ballPrefab, 
-				transform.position + new Vector3 (0, 0, 0), 
-				Quaternion.identity) as GameObject;
-
-
-			ball.GetComponent<Rigidbody2D> ().velocity = new Vector3 (2f, 10f, 0f);
-
-			NetworkServer.Spawn (ball);
-		}
-
 	}
 
 	public override void OnStopClient() {

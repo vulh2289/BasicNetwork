@@ -7,7 +7,6 @@ public class PaddleController : NetworkBehaviour {
 
 	private float speed = 10.0f;
 	public bool inverse;
-	public int playerId = -1;
 
 	void Start () {
 		Input.multiTouchEnabled = true; //enabled Multitouch
@@ -51,5 +50,24 @@ public class PaddleController : NetworkBehaviour {
 		Vector3 direction = !inverse ? Vector3.right : Vector3.left;
 
 		transform.position += direction * speed * Time.deltaTime;
+	}
+
+	public Vector2 GetTouchPoint() {
+		foreach (Touch touch in Input.touches) {
+			if (touch.position.x < Screen.width/2) {
+			}
+			else if (touch.position.x > Screen.width/2) {
+			}
+
+			return touch.position;
+		}
+
+		if (Input.GetMouseButtonDown(0)) {
+			Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+			return mousePosition;
+		}
+
+		return new Vector2(0,0);
 	}
 }

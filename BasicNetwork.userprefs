@@ -1,17 +1,19 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Ball.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PaddleController.cs">
     <Files>
-      <File FileName="Assets/PlayerSetup.cs" Line="1" Column="1" />
-      <File FileName="Assets/PaddleController.cs" Line="1" Column="1" />
-      <File FileName="Assets/GameManager2.cs" Line="1" Column="1" />
-      <File FileName="Assets/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/CustomNetworkManager.cs" Line="23" Column="2" />
-      <File FileName="Assets/Ball.cs" Line="1" Column="1" />
+      <File FileName="Assets/Paddle.cs" Line="27" Column="2" />
+      <File FileName="Assets/PaddleController.cs" Line="9" Column="22" />
+      <File FileName="Assets/GameManager2.cs" Line="9" Column="3" />
+      <File FileName="Assets/CustomNetworkManager.cs" Line="40" Column="3" />
+      <File FileName="Assets/Ball.cs" Line="46" Column="23" />
+      <File FileName="Assets/PositionSynchronizer.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/vulh/Documents/Unity/git/BasicNetwork/Assets/CustomNetworkManager.cs" line="46" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

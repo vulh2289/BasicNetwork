@@ -48,9 +48,10 @@
      <Compile Include="Assets\Ball.cs" />
      <Compile Include="Assets\CustomNetworkManager.cs" />
      <Compile Include="Assets\GameManager.cs" />
-     <Compile Include="Assets\GameManager2.cs" />
+     <Compile Include="Assets\GameStates.cs" />
      <Compile Include="Assets\Paddle.cs" />
      <Compile Include="Assets\PaddleController.cs" />
+     <Compile Include="Assets\PaddleSetup.cs" />
      <Compile Include="Assets\PositionSynchronizer.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
