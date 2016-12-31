@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class Ball : NetworkBehaviour {
 
 	private float speed;
+	public GameManager gameManager;
 
 	[SyncVar]
 	private int lastTouchPlayerId = -1;
@@ -13,6 +14,7 @@ public class Ball : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameManager = FindObjectOfType<GameManager> ();
 		CmdChangeSpeed (5f);
 		GetComponent<Rigidbody2D> ();
 	}
@@ -44,6 +46,10 @@ public class Ball : NetworkBehaviour {
 	public void CmdSetPosition (Vector2 position)
 	{
 		GetComponent<Rigidbody2D> ().position = position;
+	}
+		
+	public void CmdSetWinner(int playerIndex) {
+		
 	}
 
 	void addRandomDirection ()
@@ -78,9 +84,9 @@ public class Ball : NetworkBehaviour {
 		}
 
 		if (coll.gameObject.tag == "Player1Goal") {
-			print ("hit player 1 goal");
+			gameManager.setWinner (1);
 		} else if (coll.gameObject.tag == "Player2Goal") {
-			print ("hit player 2 goal");
+			gameManager.setWinner (0);
 		} else {
 			addRandomDirection ();
 		}

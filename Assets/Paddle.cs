@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Paddle : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class Paddle : MonoBehaviour {
 	private float paddleHeight;
 	private float ballHeight;
 
+	private Text text;
 	// Use this for initialization
 	void Start () {
 //		gameManager = FindObjectOfType<GameManager> ();
@@ -19,6 +21,9 @@ public class Paddle : MonoBehaviour {
 
 		Collider2D collider2D = gameObject.GetComponent<Collider2D>();
 		paddleHeight = collider2D.bounds.size.y;
+
+		text =  FindObjectOfType<Text>();
+		text.text = "";
 	}
 	
 	// Update is called once per frame
@@ -68,4 +73,16 @@ public class Paddle : MonoBehaviour {
 
 		return ball;
 	}
+
+	public void win ()
+	{
+		text.text = "Winner!";
+	}
+
+	public void lose ()
+	{
+		text.text = "Loser!";
+	}
+
+
 }
