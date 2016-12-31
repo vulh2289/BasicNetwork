@@ -14,6 +14,7 @@ public class Ball : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		CmdChangeSpeed (5f);
+		GetComponent<Rigidbody2D> ();
 	}
 	
 	// Update is called once per frame
@@ -37,6 +38,12 @@ public class Ball : NetworkBehaviour {
 	{
 		GetComponent<Rigidbody2D> ().velocity = touchPoint;
 		CmdChangeSpeed (speed);
+	}
+
+	[Command]
+	public void CmdSetPosition (Vector2 position)
+	{
+		GetComponent<Rigidbody2D> ().position = position;
 	}
 
 	void addRandomDirection ()
@@ -64,6 +71,12 @@ public class Ball : NetworkBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
+		
+		// Only do collision when game started
+		if (GameManager.gameState != GameManager.GameStates.STARTED) {
+			return;
+		}
+
 		if (coll.gameObject.tag == "Player1Goal") {
 			print ("hit player 1 goal");
 		} else if (coll.gameObject.tag == "Player2Goal") {

@@ -11,12 +11,13 @@ public class GameManager : NetworkBehaviour
 		WAITING_FOR_PLAYERS, READY, STARTED, PLAYER1_WIN, PLAYER2_WIN
 	}
 		
-	public GameStates gameState;
-	private Paddle[] paddles;
+	public static GameStates gameState;
+	public static Paddle[] paddles;
 
 	public override void OnStartServer()
 	{
 		gameState = GameStates.WAITING_FOR_PLAYERS;
+		InvokeRepeating("CreateItems", 2.0f, 10.0f);
 	}
 
 	public void Update() {
@@ -50,9 +51,7 @@ public class GameManager : NetworkBehaviour
 			gameState = GameStates.READY;
 
 			// Create ball
-			var ball = Instantiate (ballPrefab, new Vector3 (0, 0, 0), 
-				Quaternion.identity) as GameObject;
-			NetworkServer.Spawn (ball);
+			CreateBall();
 
 			// Give ball to host
 			paddles[0].assignBall();
@@ -72,6 +71,22 @@ public class GameManager : NetworkBehaviour
 	void informWinner ()
 	{
 
+	}
+
+	// Private
+
+	void CreateBall() {
+		var ball = Instantiate (ballPrefab, new Vector3 (0, 0, 0), 
+			          Quaternion.identity) as GameObject;
+		NetworkServer.Spawn (ball);
+	}
+
+	void CreateItems() {
+		if (gameState == GameStates.STARTED) {
+//			var ball = Instantiate (ballPrefab, new Vector3 (0, 0, 0), 
+//				Quaternion.identity) as GameObject;
+//			NetworkServer.Spawn (ball);
+		}
 	}
 }
 

@@ -7,6 +7,7 @@ public class PaddleController : NetworkBehaviour {
 
 	private float speed = 10.0f;
 	public bool inverse;
+	public int playerId;
 
 	void Start () {
 		Input.multiTouchEnabled = true; //enabled Multitouch
@@ -19,23 +20,37 @@ public class PaddleController : NetworkBehaviour {
 		} 
 
 		if (Input.GetKey (KeyCode.A) ) {
-			CmdMoveLeft ();
+			MoveLeft ();
 		}
 
-
 		if (Input.GetKey (KeyCode.D)) {
-			CmdMoveRight ();
+			MoveRight ();
 		}
 
 		foreach (Touch touch in Input.touches) {
 			if (touch.position.x < Screen.width/2) {
-				CmdMoveLeft();
+				MoveLeft();
 			}
 			else if (touch.position.x > Screen.width/2) {
-				CmdMoveRight();
+				MoveRight();
 			} 
 		}
-	}		
+	}
+
+	private void MoveLeft() {
+		if (inverse) {
+			CmdMoveRight ();
+		} else {
+			CmdMoveLeft ();
+		}
+	}
+	private void MoveRight() {
+		if (inverse) {
+			CmdMoveLeft ();
+		} else {
+			CmdMoveRight ();
+		}
+	}
 
 	[Command]
 	public void CmdMoveLeft() {
@@ -53,19 +68,11 @@ public class PaddleController : NetworkBehaviour {
 	}
 
 	public Vector2 GetTouchPoint() {
-		foreach (Touch touch in Input.touches) {
-			if (touch.position.x < Screen.width/2) {
-			}
-			else if (touch.position.x > Screen.width/2) {
-			}
-
-			return touch.position;
-		}
-
 		if (Input.GetMouseButtonDown(0)) {
-			Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 
-			return mousePosition;
+			Vector3 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+			return new Vector2 (p.x, p.y);
 		}
 
 		return new Vector2(0,0);
