@@ -24,12 +24,12 @@ public class PaddleSetup : NetworkBehaviour {
 			camera1.enabled = false;
 			camera2.enabled = true;
 			controller.inverse = true;
-			controller.playerId = 2;
+			controller.CmdSetPlayerId(2);
 		} else {
 			camera1.enabled = true;
 			camera2.enabled = false;
 			controller.inverse = false;
-			controller.playerId = 1;
+			controller.CmdSetPlayerId(1);
 		}
 	}
 

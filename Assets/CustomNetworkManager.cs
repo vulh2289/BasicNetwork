@@ -5,20 +5,21 @@ using System.Collections.Generic;
 
 public class CustomNetworkManager : NetworkManager
 {
-	public static int playerCount;
+//	public static int playerCount;
 
 	public Transform pos1;
 	public Transform pos2;
-
+//
 	void Start() {
 	}
-
+//
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
 	{
 		Transform transform;
-		playerCount++;
 
-		if (playerCount == 1) {
+		Paddle p1 = FindObjectOfType<Paddle> ();
+
+		if (p1 == null) {
 			transform = pos1;
 		} else {
 			transform = pos2;
@@ -29,9 +30,6 @@ public class CustomNetworkManager : NetworkManager
 		NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
 	}
 
-	public override void OnStopClient() {
-		playerCount--;
-	}
 
 }
 
