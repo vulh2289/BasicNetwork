@@ -39,9 +39,14 @@ public class GameManager : NetworkBehaviour
 
 	public void setWinner (int i)
 	{
-		paddles [i].win();
-		int loseIndex = i == 0 ? 1 : 0;
-		paddles [loseIndex].lose();
+		foreach(Paddle item in paddles) 
+		{
+			if (item.paddleBehaviour.playerId == i) {
+				item.paddleBehaviour.RpcWin ();
+			} else {
+				item.paddleBehaviour.RpcLose ();
+			}
+		}
 	}
 		
 	void waitingForPlayer ()
@@ -56,13 +61,16 @@ public class GameManager : NetworkBehaviour
 			CreateBall();
 
 			// Make sure the array correctly sorted by id for easy accessing
-			if (tempPaddles [0].paddleController.playerId == 0) {
+			if (tempPaddles [0].paddleBehaviour.playerId == 1) {
 				paddles [0] = tempPaddles [0];
 				paddles [1] = tempPaddles [1];
 			} else {
 				paddles [0] = tempPaddles [1];
 				paddles [1] = tempPaddles [0];
 			}
+				
+			paddles [0].paddleBehaviour.CmdSetPlayerId (1);
+			paddles [1].paddleBehaviour.CmdSetPlayerId (2);
 
 			// Give ball to host
 			paddles[0].assignBall();

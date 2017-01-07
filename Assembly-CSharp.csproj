@@ -49,6 +49,7 @@
      <Compile Include="Assets\CustomNetworkManager.cs" />
      <Compile Include="Assets\GameManager.cs" />
      <Compile Include="Assets\Paddle.cs" />
+     <Compile Include="Assets\PaddleBehaviour.cs" />
      <Compile Include="Assets\PaddleController.cs" />
      <Compile Include="Assets\PaddleSetup.cs" />
  <Reference Include="UnityEngine.Networking">

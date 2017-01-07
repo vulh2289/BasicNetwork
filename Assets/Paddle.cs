@@ -9,21 +9,20 @@ public class Paddle : MonoBehaviour {
 	public Ball ball;
 //	public GameManager gameManager;
 	public PaddleController paddleController;
+	public PaddleBehaviour paddleBehaviour;
 
 	private float paddleHeight;
 	private float ballHeight;
 
-	private Text text;
 	// Use this for initialization
 	void Start () {
 //		gameManager = FindObjectOfType<GameManager> ();
 		paddleController = FindObjectOfType<PaddleController> ();
+		paddleBehaviour = FindObjectOfType<PaddleBehaviour> ();
 
 		Collider2D collider2D = gameObject.GetComponent<Collider2D>();
 		paddleHeight = collider2D.bounds.size.y;
 
-		text =  FindObjectOfType<Text>();
-		text.text = "";
 	}
 	
 	// Update is called once per frame
@@ -60,7 +59,7 @@ public class Paddle : MonoBehaviour {
 		if (coll.gameObject.tag == "Ball") {
 			ball = getBall ();
 			ball.CmdChangeSpeed (powerSpeed);
-			ball.CmdChangeLastTouch (paddleController.playerId);
+			ball.CmdChangeLastTouch (paddleBehaviour.playerId);
 		} 
 	}
 
@@ -73,16 +72,5 @@ public class Paddle : MonoBehaviour {
 
 		return ball;
 	}
-
-	public void win ()
-	{
-		text.text = "Winner!";
-	}
-
-	public void lose ()
-	{
-		text.text = "Loser!";
-	}
-
 
 }

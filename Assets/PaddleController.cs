@@ -8,9 +8,6 @@ public class PaddleController : NetworkBehaviour {
 	private float speed = 10.0f;
 	public bool inverse;
 
-	[SyncVar]
-	public int playerId = -1;
-
 	void Start () {
 		Input.multiTouchEnabled = true; //enabled Multitouch
 	}
@@ -67,11 +64,6 @@ public class PaddleController : NetworkBehaviour {
 		Vector3 direction = !inverse ? Vector3.right : Vector3.left;
 
 		transform.position += direction * speed * Time.deltaTime;
-	}
-
-	[Command]
-	public void CmdSetPlayerId(int playerId) {
-		this.playerId = playerId;
 	}
 
 	public Vector2 GetTouchPoint() {

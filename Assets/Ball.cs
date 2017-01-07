@@ -48,6 +48,7 @@ public class Ball : NetworkBehaviour {
 		GetComponent<Rigidbody2D> ().position = position;
 	}
 		
+	[Command]
 	public void CmdSetWinner(int playerIndex) {
 		
 	}
@@ -84,9 +85,9 @@ public class Ball : NetworkBehaviour {
 		}
 
 		if (coll.gameObject.tag == "Player1Goal") {
-			gameManager.setWinner (1);
+			gameManager.setWinner (2);
 		} else if (coll.gameObject.tag == "Player2Goal") {
-			gameManager.setWinner (0);
+			gameManager.setWinner (1);
 		} else {
 			addRandomDirection ();
 		}

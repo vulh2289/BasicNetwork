@@ -1,13 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PaddleController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CustomNetworkManager.cs">
     <Files>
-      <File FileName="Assets/GameManager.cs" Line="44" Column="1" />
-      <File FileName="Assets/Paddle.cs" Line="2" Column="26" />
-      <File FileName="Assets/PaddleSetup.cs" Line="1" Column="1" />
-      <File FileName="Assets/PaddleController.cs" Line="29" Column="17" />
+      <File FileName="Assets/GameManager.cs" Line="69" Column="4" />
+      <File FileName="Assets/Paddle.cs" Line="40" Column="25" />
+      <File FileName="Assets/PaddleSetup.cs" Line="23" Column="25" />
+      <File FileName="Assets/PaddleController.cs" Line="12" Column="26" />
       <File FileName="Assets/Ball.cs" Line="1" Column="1" />
-      <File FileName="Assets/CustomNetworkManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/CustomNetworkManager.cs" Line="32" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
