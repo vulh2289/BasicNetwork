@@ -14,6 +14,7 @@ public class GameManager : NetworkBehaviour
 
 	public static GameStates gameState;
 	public static Paddle[] paddles = {null, null};
+	public static Ball ball;
 
 	public override void OnStartServer()
 	{
@@ -37,15 +38,27 @@ public class GameManager : NetworkBehaviour
 		}
 	}
 
-	public void setWinner (int i)
+	public void setWinner (int playerId)
 	{
 		foreach(Paddle item in paddles) 
 		{
-			if (item.paddleBehaviour.playerId == i) {
+			if (item.paddleBehaviour.playerId == playerId) {
 				item.paddleBehaviour.RpcWin ();
 			} else {
 				item.paddleBehaviour.RpcLose ();
 			}
+		}
+	}
+
+	public void assignItem(GameObject item) {
+		int playerId = ball.lastTouchPlayerId;
+		foreach(Paddle paddle in paddles) 
+		{
+			if (paddle.paddleBehaviour.playerId == playerId) {
+				paddle.paddleBehaviour.RpcAssign(item);
+				print ("Item assigned to " + playerId);
+				return;
+			} 
 		}
 	}
 		
@@ -94,16 +107,17 @@ public class GameManager : NetworkBehaviour
 	// Private
 
 	void CreateBall() {
-		var ball = Instantiate (ballPrefab, new Vector3 (0, 0, 0), 
+		var ballObj = Instantiate (ballPrefab, new Vector3 (0, 0, 0), 
 			          Quaternion.identity) as GameObject;
-		NetworkServer.Spawn (ball);
+		NetworkServer.Spawn (ballObj);
+
+		ball = FindObjectOfType<Ball> ();
+
 	}
 
 	void CreateItems() {
 		if (gameState == GameStates.STARTED) {
-//			var ball = Instantiate (ballPrefab, new Vector3 (0, 0, 0), 
-//				Quaternion.identity) as GameObject;
-//			NetworkServer.Spawn (ball);
+
 		}
 	}
 }

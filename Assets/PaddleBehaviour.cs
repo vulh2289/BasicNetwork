@@ -7,6 +7,7 @@ public class PaddleBehaviour : NetworkBehaviour {
 
 //	[SyncVar]
 	private Text text;
+	private GameObject item1;
 
 	public void Start() {
 		text =  FindObjectOfType<Text>();
@@ -25,6 +26,15 @@ public class PaddleBehaviour : NetworkBehaviour {
 	{
 		if (isLocalPlayer)
 		text.text = "Winner!";
+	}
+
+	[ClientRpc]
+	public void RpcAssign (GameObject item)
+	{
+//		item1 = item;
+//		Paddle paddle = FindObjectOfType<Paddle> ();
+//		SpeedItem speedItem = item.GetComponent<SpeedItem> ();
+		FindObjectOfType<Paddle> ().powerSpeed += 1f;
 	}
 
 	[SyncVar]

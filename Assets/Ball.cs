@@ -9,7 +9,7 @@ public class Ball : NetworkBehaviour {
 	public GameManager gameManager;
 
 	[SyncVar]
-	private int lastTouchPlayerId = -1;
+	public int lastTouchPlayerId = -1;
 	
 
 	// Use this for initialization
@@ -88,6 +88,8 @@ public class Ball : NetworkBehaviour {
 			gameManager.setWinner (2);
 		} else if (coll.gameObject.tag == "Player2Goal") {
 			gameManager.setWinner (1);
+		} else if (coll.gameObject.tag == "Item") {
+			gameManager.assignItem (coll.gameObject);
 		} else {
 			addRandomDirection ();
 		}
