@@ -31,10 +31,18 @@ public class PaddleBehaviour : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcAssign (GameObject item)
 	{
-//		item1 = item;
-//		Paddle paddle = FindObjectOfType<Paddle> ();
+		Paddle paddle = gameObject.GetComponent<Paddle>();
 //		SpeedItem speedItem = item.GetComponent<SpeedItem> ();
-		FindObjectOfType<Paddle> ().powerSpeed += 1f;
+		paddle.powerSpeed += 1f;
+		if (isLocalPlayer) {
+		}
+	}
+
+	[ClientRpc]
+	public void RpcIncreaseSpeedPowerBy (float moreSpeed)
+	{
+		Paddle paddle = gameObject.GetComponent<Paddle>();
+		paddle.powerSpeed = Mathf.Clamp(paddle.powerSpeed + moreSpeed, 1f, 15f);
 	}
 
 	[SyncVar]

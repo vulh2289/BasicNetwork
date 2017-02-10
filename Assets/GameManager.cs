@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GameManager : NetworkBehaviour
 {
 	public GameObject ballPrefab;
+	public GameObject[] itemPrefabs;
 
 	public enum GameStates {
 		WAITING_FOR_PLAYERS, READY, STARTED, PLAYER1_WIN, PLAYER2_WIN
@@ -55,8 +56,13 @@ public class GameManager : NetworkBehaviour
 		foreach(Paddle paddle in paddles) 
 		{
 			if (paddle.paddleBehaviour.playerId == playerId) {
-				paddle.paddleBehaviour.RpcAssign(item);
-				print ("Item assigned to " + playerId);
+
+				SpeedItem sI = item.GetComponent<SpeedItem> ();
+				if (sI) {
+					paddle.paddleBehaviour.RpcIncreaseSpeedPowerBy(sI.speed);
+					return;
+				}
+
 				return;
 			} 
 		}
@@ -118,6 +124,17 @@ public class GameManager : NetworkBehaviour
 	void CreateItems() {
 		if (gameState == GameStates.STARTED) {
 
+			if (itemPrefabs.Length == 0) {
+				return;
+			}
+
+			int randomItem = Random.Range (0, itemPrefabs.Length - 1);
+
+			if (randomItem != -1) {
+				var itemObj = Instantiate (itemPrefabs[randomItem], new Vector3 (0, 0, 0), 
+					Quaternion.identity) as GameObject;
+				NetworkServer.Spawn (itemObj);
+			}
 		}
 	}
 }

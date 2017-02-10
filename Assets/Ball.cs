@@ -39,6 +39,7 @@ public class Ball : NetworkBehaviour {
 	public void CmdFire (Vector2 touchPoint)
 	{
 		GetComponent<Rigidbody2D> ().velocity = touchPoint;
+//		GetComponent<Rigidbody2D> ().AddTorque(1f, ForceMode2D.Force);
 		CmdChangeSpeed (speed);
 	}
 
@@ -88,10 +89,16 @@ public class Ball : NetworkBehaviour {
 			gameManager.setWinner (2);
 		} else if (coll.gameObject.tag == "Player2Goal") {
 			gameManager.setWinner (1);
-		} else if (coll.gameObject.tag == "Item") {
-			gameManager.assignItem (coll.gameObject);
-		} else {
+		} 
+
+//		else if (coll.gameObject.tag == "Item") {
+//			gameManager.assignItem (coll.gameObject);
+//		} 
+
+		else {
 			addRandomDirection ();
+//			GetComponent<Rigidbody2D> ().AddTorque( Random.Range (0, 10), ForceMode2D.Force);
 		}
 	}
+
 }

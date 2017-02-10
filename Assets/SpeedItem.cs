@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class SpeedItem : MonoBehaviour {
+public class SpeedItem : NetworkBehaviour {
 
 	public float speed = 1f;
 
@@ -16,7 +16,7 @@ public class SpeedItem : MonoBehaviour {
 	
 	}
 
-	void OnCollisionEnter2D(Collision2D coll) {
+	void OnTriggerEnter2D(Collider2D coll) {
 
 		// Only do collision when game started
 		if (GameManager.gameState != GameManager.GameStates.STARTED) {
@@ -27,5 +27,7 @@ public class SpeedItem : MonoBehaviour {
 			GameManager gameManager = FindObjectOfType<GameManager> ();
 			gameManager.assignItem (this.gameObject);
 		} 
+		Destroy(gameObject);
 	}
+		
 }
