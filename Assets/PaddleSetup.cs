@@ -25,13 +25,13 @@ public class PaddleSetup : NetworkBehaviour {
 			camera2.enabled = true;
 			controller.inverse = true;
 			behaviour.CmdSetPlayerId(2);
-			GetComponent<SpriteRenderer>().color = Color.blue;
+//			GetComponent<SpriteRenderer>().color = Color.blue;
 		} else {
 			camera1.enabled = true;
 			camera2.enabled = false;
 			controller.inverse = false;
 			behaviour.CmdSetPlayerId(1);
-			GetComponent<SpriteRenderer>().color = Color.red;
+//			GetComponent<SpriteRenderer>().color = Color.red;
 		}
 	}
 
