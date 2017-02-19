@@ -43,29 +43,17 @@ public class GameManager : NetworkBehaviour
 	{
 		foreach(Paddle item in paddles) 
 		{
-			if (item.paddleBehaviour.playerId == playerId) {
-				item.paddleBehaviour.RpcWin ();
+			if (item.paddleClient.playerId == playerId) {
+				item.paddleClient.RpcWin ();
 			} else {
-				item.paddleBehaviour.RpcLose ();
+				item.paddleClient.RpcLose ();
 			}
 		}
 	}
 
 	public void assignItem(GameObject item) {
-		int playerId = ball.lastTouchPlayerId;
-		foreach(Paddle paddle in paddles) 
-		{
-			if (paddle.paddleBehaviour.playerId == playerId) {
-
-				SpeedItem sI = item.GetComponent<SpeedItem> ();
-				if (sI) {
-					paddle.paddleBehaviour.RpcIncreaseSpeedPowerBy(sI.speed);
-					return;
-				}
-
-				return;
-			} 
-		}
+		AbstractItem sI = item.GetComponent<AbstractItem> ();
+		sI.onAction (getLastTouchedPlayer (), getOpponentPlayer (), ball);
 	}
 		
 	void waitingForPlayer ()
@@ -80,7 +68,7 @@ public class GameManager : NetworkBehaviour
 			CreateBall();
 
 			// Make sure the array correctly sorted by id for easy accessing
-			if (tempPaddles [0].paddleBehaviour.playerId == 1) {
+			if (tempPaddles [0].paddleClient.playerId == 1) {
 				paddles [0] = tempPaddles [0];
 				paddles [1] = tempPaddles [1];
 			} else {
@@ -88,8 +76,8 @@ public class GameManager : NetworkBehaviour
 				paddles [1] = tempPaddles [0];
 			}
 				
-			paddles [0].paddleBehaviour.CmdSetPlayerId (1);
-			paddles [1].paddleBehaviour.CmdSetPlayerId (2);
+			paddles [0].paddleClient.CmdSetPlayerId (1);
+			paddles [1].paddleClient.CmdSetPlayerId (2);
 
 			// Give ball to host
 			paddles[0].assignBall();
@@ -136,6 +124,22 @@ public class GameManager : NetworkBehaviour
 				NetworkServer.Spawn (itemObj);
 			}
 		}
+	}
+
+	Paddle getLastTouchedPlayer () {
+		int playerId = ball.lastTouchPlayerId;
+		if (paddles [0].paddleClient.playerId == playerId)
+			return paddles [0];
+		else
+			return paddles [1];
+	}
+
+	Paddle getOpponentPlayer () {
+		int playerId = ball.lastTouchPlayerId;
+		if (paddles [0].paddleClient.playerId == playerId)
+			return paddles [1];
+		else
+			return paddles [0];
 	}
 }
 

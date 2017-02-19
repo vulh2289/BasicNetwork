@@ -2,17 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class AbstractItem : NetworkBehaviour {
-
-	// Use this for initialization
-	void Start () {
-
-	}
-
-	// Update is called once per frame
-	void Update () {
-
-	}
+public abstract class AbstractItem : NetworkBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll) {
 
@@ -27,5 +17,8 @@ public class AbstractItem : NetworkBehaviour {
 		} 
 		Destroy(gameObject);
 	}
+
+	public abstract void onAction (Paddle lastTouchedPlayer, Paddle opponent, Ball ball);
+
 
 }

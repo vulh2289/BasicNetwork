@@ -65,15 +65,4 @@ public class PaddleController : NetworkBehaviour {
 
 		transform.position += direction * speed * Time.deltaTime;
 	}
-
-	public Vector2 GetTouchPoint() {
-		if (Input.GetMouseButtonDown(0)) {
-
-			Vector3 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-			return new Vector2 (p.x, p.y);
-		}
-
-		return new Vector2(0,0);
-	}
 }

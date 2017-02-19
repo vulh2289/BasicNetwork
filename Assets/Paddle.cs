@@ -4,21 +4,17 @@ using UnityEngine.UI;
 
 public class Paddle : MonoBehaviour {
 
-	public float powerSpeed = 5f;
 	public bool isBallAssigned = false;
 	public Ball ball;
-//	public GameManager gameManager;
-	public PaddleController paddleController;
-	public PaddleBehaviour paddleBehaviour;
+	public PaddleClient paddleClient;
 
 	private float paddleHeight;
 	private float ballHeight;
 
 	// Use this for initialization
 	void Start () {
-//		gameManager = FindObjectOfType<GameManager> ();
-		paddleController = FindObjectOfType<PaddleController> ();
-		paddleBehaviour = FindObjectOfType<PaddleBehaviour> ();
+
+		paddleClient = FindObjectOfType<PaddleClient> ();
 
 		Collider2D collider2D = gameObject.GetComponent<Collider2D>();
 		paddleHeight = collider2D.bounds.size.y;
@@ -41,7 +37,7 @@ public class Paddle : MonoBehaviour {
 
 	bool waitToFire ()
 	{
-		Vector2 touchPoint = paddleController.GetTouchPoint ();
+		Vector2 touchPoint = GetTouchPoint ();
 		ball = getBall ();
 
 		if (touchPoint.x != 0 && touchPoint.y != 0) {
@@ -58,8 +54,8 @@ public class Paddle : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.tag == "Ball") {
 			ball = getBall ();
-			ball.CmdChangeSpeed (powerSpeed);
-			ball.CmdChangeLastTouch (paddleBehaviour.playerId);
+			ball.CmdChangeSpeed (paddleClient.powerSpeed);
+			ball.CmdChangeLastTouch (paddleClient.playerId);
 		} 
 	}
 
@@ -72,5 +68,15 @@ public class Paddle : MonoBehaviour {
 
 		return ball;
 	}
+		
+	private Vector2 GetTouchPoint() {
+		if (Input.GetMouseButtonDown(0)) {
 
+			Vector3 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+			return new Vector2 (p.x, p.y);
+		}
+
+		return new Vector2(0,0);
+	}
 }
