@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Paddle : MonoBehaviour {
 
@@ -8,6 +9,12 @@ public class Paddle : MonoBehaviour {
 	public Ball ball;
 	public PaddleClient paddleClient;
 
+	public ActivateItem item1;
+	public ActivateItem item2;
+
+	public List<ItemEffect> effects = new List<ItemEffect>(); 
+
+	// 
 	private float paddleHeight;
 	private float ballHeight;
 
@@ -27,6 +34,10 @@ public class Paddle : MonoBehaviour {
 			if (waitToFire ()) {
 				isBallAssigned = false;
 				GameManager.gameState = GameManager.GameStates.STARTED;
+			}
+
+			foreach (ItemEffect ie in effects) {
+				ie.Update ();
 			}
 		}
 	}
@@ -49,14 +60,6 @@ public class Paddle : MonoBehaviour {
 			ball.CmdSetPosition (new Vector2(paddlePos.x, paddlePos.y + (paddleHeight/2 + ballHeight/2)));
 			return false;
 		}
-	}
-
-	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.tag == "Ball") {
-			ball = getBall ();
-			ball.CmdChangeSpeed (paddleClient.powerSpeed);
-			ball.CmdChangeLastTouch (paddleClient.playerId);
-		} 
 	}
 
 	Ball getBall () {

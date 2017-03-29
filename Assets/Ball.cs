@@ -10,13 +10,18 @@ public class Ball : NetworkBehaviour {
 
 	[SyncVar]
 	public int lastTouchPlayerId = -1;
-	
 
 	// Use this for initialization
 	void Start () {
 		gameManager = FindObjectOfType<GameManager> ();
 		CmdChangeSpeed (5f);
 		GetComponent<Rigidbody2D> ();
+
+		foreach (Paddle paddle in GameManager.paddles) {
+			if (paddle.isBallAssigned) {
+				lastTouchPlayerId = paddle.paddleClient.playerId;
+			}
+		}
 	}
 	
 	// Update is called once per frame
@@ -30,10 +35,10 @@ public class Ball : NetworkBehaviour {
 		GetComponent<Rigidbody2D> ().velocity = GetComponent<Rigidbody2D> ().velocity.normalized * speed;
 	}
 
-	[Command]
-	public void CmdChangeLastTouch(int playerId) {
-		lastTouchPlayerId = playerId;
-	}
+//	[Command]
+//	public void CmdChangeLastTouch(int playerId) {
+//		lastTouchPlayerId = playerId;
+//	}
 
 	[Command]
 	public void CmdFire (Vector2 touchPoint)
@@ -47,11 +52,6 @@ public class Ball : NetworkBehaviour {
 	public void CmdSetPosition (Vector2 position)
 	{
 		GetComponent<Rigidbody2D> ().position = position;
-	}
-		
-	[Command]
-	public void CmdSetWinner(int playerIndex) {
-		
 	}
 
 	void addRandomDirection ()
@@ -86,17 +86,30 @@ public class Ball : NetworkBehaviour {
 		}
 
 		if (coll.gameObject.tag == "Player1Goal") {
-			gameManager.setWinner (2);
+			GameManager.paddles[0].paddleClient.RpcOnCollision(CollisionType.CONCEDE);
+			GameManager.paddles[1].paddleClient.RpcOnCollision(CollisionType.GOAL);
 		} else if (coll.gameObject.tag == "Player2Goal") {
-			gameManager.setWinner (1);
+			GameManager.paddles[0].paddleClient.RpcOnCollision(CollisionType.GOAL);
+			GameManager.paddles[1].paddleClient.RpcOnCollision(CollisionType.CONCEDE);
+		} 
+		// Send out CollisionType
+
+		else if (coll.gameObject.tag == "Player") {
+			if (GameManager.paddles [0].paddleClient.playerId == lastTouchPlayerId) {
+				GameManager.paddles [0].paddleClient.RpcOnCollision (CollisionType.BALL_TO_PADDLE);
+				GameManager.paddles [1].paddleClient.RpcOnCollision (CollisionType.BALL_TO_OPP_PADDLE);
+
+				lastTouchPlayerId = GameManager.paddles [0].paddleClient.playerId;
+			} else {
+				GameManager.paddles[0].paddleClient.RpcOnCollision(CollisionType.BALL_TO_OPP_PADDLE);
+				GameManager.paddles[1].paddleClient.RpcOnCollision(CollisionType.BALL_TO_PADDLE);
+
+				lastTouchPlayerId = GameManager.paddles [1].paddleClient.playerId;
+			}
 		} 
 
-//		else if (coll.gameObject.tag == "Item") {
-//			gameManager.assignItem (coll.gameObject);
-//		} 
-
 		else {
-			addRandomDirection ();
+//			addRandomDirection ();
 //			GetComponent<Rigidbody2D> ().AddTorque( Random.Range (0, 10), ForceMode2D.Force);
 		}
 	}

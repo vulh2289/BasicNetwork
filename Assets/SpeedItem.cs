@@ -6,7 +6,7 @@ public class SpeedItem : AbstractItem {
 
 	public float speed = 1f;
 		
-	public override void onAction (Paddle lastTouchedPlayer, Paddle opponent, Ball ball) {
+	public override void onRetrieve (Paddle lastTouchedPlayer, Paddle opponent, Ball ball){
 		lastTouchedPlayer.paddleClient.RpcIncreaseSpeedPowerBy (speed);
 	}
 }

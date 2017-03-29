@@ -18,7 +18,7 @@ public abstract class AbstractItem : NetworkBehaviour {
 		Destroy(gameObject);
 	}
 
-	public abstract void onAction (Paddle lastTouchedPlayer, Paddle opponent, Ball ball);
+	public abstract void onRetrieve (Paddle lastTouchedPlayer, Paddle opponent, Ball ball);
 
 
 }

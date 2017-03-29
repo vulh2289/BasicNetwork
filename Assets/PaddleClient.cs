@@ -6,14 +6,13 @@ using UnityEngine.UI;
 
 public class PaddleClient : NetworkBehaviour
 {
-	[SyncVar]
 	public int playerId = -1;
 
 	private Text text;
-	private GameObject item1;
-
 	public Camera camera1;
 	public Camera camera2;
+
+	Paddle paddle;
 
 	// Attributes
 
@@ -23,6 +22,8 @@ public class PaddleClient : NetworkBehaviour
 	[SyncVar]
 	public float powerSpeed = 5f;
 
+	public float tmpPowerSpeed = 0f;
+
 	public void Start() {
 		text =  FindObjectOfType<Text>();
 		text.text = "";
@@ -30,9 +31,10 @@ public class PaddleClient : NetworkBehaviour
 
 	public override void OnStartLocalPlayer()
 	{
+		paddle = GetComponent<Paddle> ();
+
 		PaddleController controller = GetComponent<PaddleController> ();
 		controller.enabled = true;
-
 
 		camera1 = GameObject.Find("Camera 1").GetComponent<Camera>();
 		camera2 = GameObject.Find("Camera 2").GetComponent<Camera>();
@@ -55,40 +57,59 @@ public class PaddleClient : NetworkBehaviour
 	}
 
 	[ClientRpc]
-	public void RpcLose ()
+	public void RpcOnCollision (CollisionType collisionType)
 	{
-		if (isLocalPlayer)
+		if (!isLocalPlayer) 
+		{
+			return;
+		}
+
+		foreach (ItemEffect ie in paddle.effects) {
+			ie.OnCollision (collisionType);
+		}
+
+		text.text = "Loser!";
+
+		switch (collisionType) 
+		{
+		case CollisionType.BALL_TO_PADDLE:
+			float speed = tmpPowerSpeed > powerSpeed ? tmpPowerSpeed : powerSpeed;
+			paddle.ball.CmdChangeSpeed (speed);
+			break;
+		case CollisionType.BALL_TO_OPP_PADDLE:
+			break;
+		case CollisionType.CONCEDE:
 			text.text = "Loser!";
-	}
-
-	[ClientRpc]
-	public void RpcWin ()
-	{
-		if (isLocalPlayer)
+			break;
+		case CollisionType.GOAL:
 			text.text = "Winner!";
+			break;
+		}
 	}
 
 	[ClientRpc]
-	public void RpcAssign (GameObject item)
+	public void RpcAssignItem (ActivateItem item)
 	{
 		Paddle paddle = gameObject.GetComponent<Paddle>();
-		//		SpeedItem speedItem = item.GetComponent<SpeedItem> ();
-		paddle.paddleClient.powerSpeed += 1f;
 		if (isLocalPlayer) {
+			if (paddle.item1 == ActivateItem.NONE) {
+				paddle.item1 = item;
+			} else if (paddle.item2 == ActivateItem.NONE) {
+				paddle.item2 = item;
+			}
 		}
 	}
 
 	[ClientRpc]
 	public void RpcIncreaseSpeedPowerBy (float moreSpeed)
 	{
-		Paddle paddle = gameObject.GetComponent<Paddle>();
-		paddle.paddleClient.powerSpeed = Mathf.Clamp(paddle.paddleClient.powerSpeed + moreSpeed, 1f, 15f);
+		powerSpeed = Mathf.Clamp(powerSpeed + moreSpeed, 1f, 15f);
 	}
 
+	[Command]
 	public void CmdSetPlayerId(int playerId) {
 		this.playerId = playerId;
 	}
-		
 }
 
 

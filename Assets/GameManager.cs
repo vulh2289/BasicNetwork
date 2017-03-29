@@ -39,21 +39,21 @@ public class GameManager : NetworkBehaviour
 		}
 	}
 
-	public void setWinner (int playerId)
-	{
-		foreach(Paddle item in paddles) 
-		{
-			if (item.paddleClient.playerId == playerId) {
-				item.paddleClient.RpcWin ();
-			} else {
-				item.paddleClient.RpcLose ();
-			}
-		}
-	}
+//	public void setWinner (int playerId)
+//	{
+//		foreach(Paddle item in paddles) 
+//		{
+//			if (item.paddleClient.playerId == playerId) {
+//				item.paddleClient.RpcWin ();
+//			} else {
+//				item.paddleClient.RpcLose ();
+//			}
+//		}
+//	}
 
 	public void assignItem(GameObject item) {
 		AbstractItem sI = item.GetComponent<AbstractItem> ();
-		sI.onAction (getLastTouchedPlayer (), getOpponentPlayer (), ball);
+		sI.onRetrieve (getLastTouchedPlayer (), getOpponentPlayer (), ball);
 	}
 		
 	void waitingForPlayer ()
@@ -116,7 +116,7 @@ public class GameManager : NetworkBehaviour
 				return;
 			}
 
-			int randomItem = Random.Range (0, itemPrefabs.Length - 1);
+			int randomItem = Random.Range (1, itemPrefabs.Length - 1);
 
 			if (randomItem != -1) {
 				var itemObj = Instantiate (itemPrefabs[randomItem], new Vector3 (0, 0, 0), 
