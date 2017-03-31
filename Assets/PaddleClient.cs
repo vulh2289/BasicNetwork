@@ -18,10 +18,7 @@ public class PaddleClient : NetworkBehaviour
 
 	[SyncVar]
 	public int health = 3;
-
-	[SyncVar]
 	public float powerSpeed = 5f;
-
 	public float tmpPowerSpeed = 0f;
 
 	public void Start() {
@@ -64,17 +61,17 @@ public class PaddleClient : NetworkBehaviour
 			return;
 		}
 
-		foreach (ItemEffect ie in paddle.effects) {
-			ie.OnCollision (collisionType);
+		if (paddle != null && paddle.effects != null && paddle.effects.Count != 0) {
+			foreach (ItemEffect ie in paddle.effects) {
+				ie.OnCollision (collisionType);
+			}
 		}
-
-		text.text = "Loser!";
 
 		switch (collisionType) 
 		{
 		case CollisionType.BALL_TO_PADDLE:
-			float speed = tmpPowerSpeed > powerSpeed ? tmpPowerSpeed : powerSpeed;
-			paddle.ball.CmdChangeSpeed (speed);
+			//			float speed = tmpPowerSpeed > powerSpeed ? tmpPowerSpeed : powerSpeed;
+			paddle.ball.CmdChangeSpeed (powerSpeed);
 			break;
 		case CollisionType.BALL_TO_OPP_PADDLE:
 			break;
@@ -90,6 +87,11 @@ public class PaddleClient : NetworkBehaviour
 	[ClientRpc]
 	public void RpcAssignItem (ActivateItem item)
 	{
+		if (!isLocalPlayer) 
+		{
+			return;
+		}
+
 		Paddle paddle = gameObject.GetComponent<Paddle>();
 		if (isLocalPlayer) {
 			if (paddle.item1 == ActivateItem.NONE) {
@@ -103,6 +105,11 @@ public class PaddleClient : NetworkBehaviour
 	[ClientRpc]
 	public void RpcIncreaseSpeedPowerBy (float moreSpeed)
 	{
+		if (!isLocalPlayer) 
+		{
+			return;
+		}
+
 		powerSpeed = Mathf.Clamp(powerSpeed + moreSpeed, 1f, 15f);
 	}
 

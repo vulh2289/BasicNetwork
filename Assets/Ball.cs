@@ -7,8 +7,6 @@ public class Ball : NetworkBehaviour {
 
 	private float speed;
 	public GameManager gameManager;
-
-	[SyncVar]
 	public int lastTouchPlayerId = -1;
 
 	// Use this for initialization
@@ -19,7 +17,7 @@ public class Ball : NetworkBehaviour {
 
 		foreach (Paddle paddle in GameManager.paddles) {
 			if (paddle.isBallAssigned) {
-				lastTouchPlayerId = paddle.paddleClient.playerId;
+				CmdChangeLastTouch(paddle.paddleClient.playerId);
 			}
 		}
 	}
@@ -35,10 +33,10 @@ public class Ball : NetworkBehaviour {
 		GetComponent<Rigidbody2D> ().velocity = GetComponent<Rigidbody2D> ().velocity.normalized * speed;
 	}
 
-//	[Command]
-//	public void CmdChangeLastTouch(int playerId) {
-//		lastTouchPlayerId = playerId;
-//	}
+	[Command]
+	public void CmdChangeLastTouch(int playerId) {
+		lastTouchPlayerId = playerId;
+	}
 
 	[Command]
 	public void CmdFire (Vector2 touchPoint)
@@ -79,11 +77,13 @@ public class Ball : NetworkBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
-		
+
 		// Only do collision when game started
 		if (GameManager.gameState != GameManager.GameStates.STARTED) {
 			return;
 		}
+
+		var paddles = GameManager.paddles;
 
 		if (coll.gameObject.tag == "Player1Goal") {
 			GameManager.paddles[0].paddleClient.RpcOnCollision(CollisionType.CONCEDE);
@@ -95,17 +95,17 @@ public class Ball : NetworkBehaviour {
 		// Send out CollisionType
 
 		else if (coll.gameObject.tag == "Player") {
-			if (GameManager.paddles [0].paddleClient.playerId == lastTouchPlayerId) {
-				GameManager.paddles [0].paddleClient.RpcOnCollision (CollisionType.BALL_TO_PADDLE);
-				GameManager.paddles [1].paddleClient.RpcOnCollision (CollisionType.BALL_TO_OPP_PADDLE);
+			Paddle paddle = coll.gameObject.GetComponent<Paddle> ();
+			CmdChangeLastTouch(paddle.paddleClient.playerId);
+			paddle.paddleClient.RpcOnCollision (CollisionType.BALL_TO_PADDLE);
+//			CmdChangeSpeed (paddle.paddleClient.powerSpeed);
 
-				lastTouchPlayerId = GameManager.paddles [0].paddleClient.playerId;
-			} else {
-				GameManager.paddles[0].paddleClient.RpcOnCollision(CollisionType.BALL_TO_OPP_PADDLE);
-				GameManager.paddles[1].paddleClient.RpcOnCollision(CollisionType.BALL_TO_PADDLE);
-
-				lastTouchPlayerId = GameManager.paddles [1].paddleClient.playerId;
-			}
+//			foreach (Paddle each in GameManager.paddles) {
+//				if (each.paddleClient.playerId != lastTouchPlayerId) {
+//					each.paddleClient.RpcOnCollision (CollisionType.BALL_TO_OPP_PADDLE);
+//					break;
+//				}
+//			}
 		} 
 
 		else {

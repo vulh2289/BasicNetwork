@@ -76,8 +76,8 @@ public class GameManager : NetworkBehaviour
 				paddles [1] = tempPaddles [0];
 			}
 				
-			paddles [0].paddleClient.CmdSetPlayerId (1);
-			paddles [1].paddleClient.CmdSetPlayerId (2);
+//			paddles [0].paddleClient.CmdSetPlayerId (1);
+//			paddles [1].paddleClient.CmdSetPlayerId (2);
 
 			// Give ball to host
 			paddles[0].assignBall();
@@ -116,7 +116,7 @@ public class GameManager : NetworkBehaviour
 				return;
 			}
 
-			int randomItem = Random.Range (1, itemPrefabs.Length - 1);
+			int randomItem = Random.Range (0, itemPrefabs.Length - 1);
 
 			if (randomItem != -1) {
 				var itemObj = Instantiate (itemPrefabs[randomItem], new Vector3 (0, 0, 0), 
